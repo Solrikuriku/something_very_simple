@@ -8,8 +8,8 @@
              x:DataType="vm:MainViewModel">
 
 	<DockPanel>
-		<TextBox DockPanel.Dock="Top" Text="0"/>
-		<Button DockPanel.Dock="Left">1</Button>
+		<TextBox Text="{Binding WriteNum}" DockPanel.Dock="Top"/>
+		<Button Command="{Binding WriteNum}" DockPanel.Dock="Left">1</Button>
 		<Button>2</Button>
 		<Button DockPanel.Dock="Right">3</Button>
 	</DockPanel>
