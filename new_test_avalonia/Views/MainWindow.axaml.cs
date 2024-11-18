@@ -8,7 +8,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        Width = 450;
-        Height = 600;
+        Width = 300;
+        Height = 300;
     }
 }

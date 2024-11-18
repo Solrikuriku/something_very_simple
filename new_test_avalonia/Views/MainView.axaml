@@ -3,15 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:new_test_avalonia.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="600"
+			 xmlns:s="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
              x:Class="new_test_avalonia.Views.MainView"
              x:DataType="vm:MainViewModel">
 
-	<DockPanel>
-		<TextBox Text="{Binding WriteNum}" DockPanel.Dock="Top"/>
-		<Button Command="{Binding WriteNum}" DockPanel.Dock="Left">1</Button>
-		<Button>2</Button>
-		<Button DockPanel.Dock="Right">3</Button>
-	</DockPanel>
+
 
 </UserControl>
