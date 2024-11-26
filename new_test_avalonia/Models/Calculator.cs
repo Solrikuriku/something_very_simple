@@ -54,12 +54,6 @@ namespace new_test_avalonia.Models
                     }
                     else
                     {
-                        //while (_operandStack.Count > 0)
-                        //{
-                        //    postfix.Append(_operandStack.Last());
-                        //    _operandStack.Pop();
-                        //}
-
                         CleanStack(ref _operandStack, ref postfix);
                     }
 
@@ -67,7 +61,8 @@ namespace new_test_avalonia.Models
                 }
             }
             
-            return postfix;
+            //???
+           return postfix;
         }
 
         private void CleanStack(ref Stack<char> _opStack, ref StringBuilder pstfx)
@@ -77,6 +72,54 @@ namespace new_test_avalonia.Models
                 pstfx.Append(_opStack.Last());
                 _opStack.Pop();
             }
+        }
+    }
+
+    public class Calculator
+    {
+        private string? _expr;
+        public double _result = 0;
+
+        public Calculator(string expr)
+        {
+            _expr = expr;
+            Calculate(_expr, ref _result);
+        }
+        public double Calculate(string exp, ref double res)
+        {
+            var _stack = new Stack<double>();
+
+            foreach (var s in exp)
+            {
+                if (Char.IsDigit(s))
+                    _stack.Push(Convert.ToDouble(s));
+                else
+                {
+                    var a = _stack.Pop();
+                    var b = _stack.Pop();
+
+                    switch (s)
+                    {
+                        case '+':
+                            res = b + a;
+                            break;
+                        case '-':
+                            res = b - a;
+                            break;
+                        case '*':
+                            res = b * a;
+                            break;
+                        case '/':
+                            res = b / a;
+                            break;
+                        default:
+                            res = 0;
+                            break;
+                    }
+                }
+            }
+
+            return res;
         }
     }
 
