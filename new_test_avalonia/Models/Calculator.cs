@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,8 +11,8 @@ namespace new_test_avalonia.Models
     
     public class Expr
     {
-        private string? _infixExpr;
-        private StringBuilder _postfixExpr = new();
+        //private string _infixExpr = String.Empty;
+        private string _postfixExpr = String.Empty;
         private Dictionary<char, int> _priority = new()
         {
             {'+', 1},
@@ -20,15 +21,29 @@ namespace new_test_avalonia.Models
             {'/', 2}
         };
 
-        public Expr(string expression)
+        //public string InfixExpr
+        //{
+        //    private get => _infixExpr;
+        //    set => _infixExpr = value;
+        //}
+
+        public string PostfixExpr
         {
-            _infixExpr = expression;
-            GetPostfixExpr(expression, ref _postfixExpr);
+            get => _postfixExpr;
+            set => _postfixExpr = GetPostfixExpr(value);
         }
-        private StringBuilder GetPostfixExpr(string exp, ref StringBuilder postfix)
+
+        //public Expr(string expression)
+        //{
+        //    _infixExpr = expression;
+        //    //GetPostfixExpr(expression, ref _postfixExpr);
+        //    _postfixExpr = GetPostfixExpr(_infixExpr);
+        //}
+        private string GetPostfixExpr(string exp)
         {
             var _operandStack = new Stack<Char>();
             var currentPriority = -1;
+            var postfix = new StringBuilder();
             
             //нет смысла делать ловушки для дурака, так как текстбокс не пропустит ошибочные символы
 
@@ -48,51 +63,63 @@ namespace new_test_avalonia.Models
                     postfix.Append(exp[i]);
                 else
                 {
-                    if (currentPriority == -1 || _priority[exp[i]] > currentPriority)
-                    {
-                        currentPriority = _priority[exp[i]];
-                    }
-                    else
+                    //if (currentPriority == -1 || _priority[exp[i]] > currentPriority)
+                    //{
+                    //    currentPriority = _priority[exp[i]];
+                    //}
+                    if (currentPriority != -1 && _priority[exp[i]] <= currentPriority)
                     {
                         CleanStack(ref _operandStack, ref postfix);
+                        //currentPriority = _priority[exp[i]];
+                        //currentPriority = -1;
                     }
-
+                    currentPriority = _priority[exp[i]];
                     _operandStack.Push(exp[i]);
                 }
             }
             
             //???
-           return postfix;
+           return postfix.ToString();
         }
 
         private void CleanStack(ref Stack<char> _opStack, ref StringBuilder pstfx)
         {
             while (_opStack.Count > 0)
             {
-                pstfx.Append(_opStack.Last());
-                _opStack.Pop();
+                //pstfx.Append(_opStack.Last());
+                //_opStack.Pop();
+                //var a = _opStack.Pop();
+                pstfx.Append(_opStack.Pop());
             }
         }
     }
 
     public class Calculator
     {
-        private string? _expr;
-        public double _result = 0;
+        //private string _expr = String.Empty;
+        private string _result = "0";
 
-        public Calculator(string expr)
+        //public string Expression
+        //{
+        //    private get => _expr;
+        //    set => _expr = value;
+        //}
+
+        public string Result
         {
-            _expr = expr;
-            Calculate(_expr, ref _result);
+            get => _result;
+            set => _result = Calculate(value);
         }
-        public double Calculate(string exp, ref double res)
+
+        public string Calculate(string exp)
         {
             var _stack = new Stack<double>();
+            double res = 0;
 
             foreach (var s in exp)
             {
                 if (Char.IsDigit(s))
-                    _stack.Push(Convert.ToDouble(s));
+                    _stack.Push(Convert.ToDouble(s.ToString()));
                 else
                 {
                     var a = _stack.Pop();
@@ -116,10 +143,12 @@ namespace new_test_avalonia.Models
                             res = 0;
                             break;
                     }
+
+                    _stack.Push(res);
                 }
             }
 
-            return res;
+            return res.ToString();
         }
     }
 

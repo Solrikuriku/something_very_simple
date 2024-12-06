@@ -16,13 +16,15 @@ namespace new_test_avalonia.ViewModels
         
         //private Calculator _calculator = new Calculator();
         private string _displayText = "0";
-        private Operation _operation = Operation.Empty;
+        //private Operation _operation = Operation.Empty;
         private Status _status = Status.Empty;
         public ReactiveCommand<string, Unit> AddNewSymbol { get; }
+        public ReactiveCommand<Unit, Unit> Result { get; }
 
         public MainViewModel()
         {
             AddNewSymbol = ReactiveCommand.Create<string>(AddSymbol);
+            Result = ReactiveCommand.Create(CalculateAll);
         }
 
         //отображение текста
@@ -41,6 +43,15 @@ namespace new_test_avalonia.ViewModels
                 ChangeStatus(symbol);
                 DisplayText += symbol;
             }
+        }
+
+        private void CalculateAll()
+        {
+            var exp = new Expr();
+            exp.PostfixExpr = DisplayText;
+            var calc = new Calculator();
+            calc.Result = exp.PostfixExpr;
+            DisplayText = calc.Result;
         }
 
         /*
