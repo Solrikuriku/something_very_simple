@@ -9,10 +9,8 @@ namespace new_test_avalonia.Models
 {
     //возможно, удалю
     
-    public class Expr
+    public class PostfixExpr
     {
-        //private string _infixExpr = String.Empty;
-        private string _postfixExpr = String.Empty;
         private Dictionary<char, int> _priority = new()
         {
             {'+', 1},
@@ -21,30 +19,13 @@ namespace new_test_avalonia.Models
             {'/', 2}
         };
 
-        //public string InfixExpr
-        //{
-        //    private get => _infixExpr;
-        //    set => _infixExpr = value;
-        //}
-
-        public string PostfixExpr
+        public List<string> GetPostfixExpr(string exp)
         {
-            get => _postfixExpr;
-            set => _postfixExpr = GetPostfixExpr(value);
-        }
-
-        //public Expr(string expression)
-        //{
-        //    _infixExpr = expression;
-        //    //GetPostfixExpr(expression, ref _postfixExpr);
-        //    _postfixExpr = GetPostfixExpr(_infixExpr);
-        //}
-        private string GetPostfixExpr(string exp)
-        {
-            var _operandStack = new Stack<Char>();
+            var _operandStack = new Stack<string>();
             var currentPriority = -1;
-            var postfix = new StringBuilder();
-            
+            var postfix = new List<string>();
+            var num = new StringBuilder();
+
             //нет смысла делать ловушки для дурака, так как текстбокс не пропустит ошибочные символы
 
             /*
@@ -52,73 +33,50 @@ namespace new_test_avalonia.Models
              * Если число, то просто добавляется.
              * Если операнд, то определяется его приоритет.
              */
-            for(int i = 0; i < exp.Length; i++)
+            for (int i = 0; i < exp.Length - 1; i++)
             {
-                if (i == exp.Length - 1)
-                {
-                    postfix.Append(exp[i]);
-                    CleanStack(ref _operandStack, ref postfix);
-                }
-                else if (Char.IsDigit(exp[i]))
-                    postfix.Append(exp[i]);
+                if (Char.IsDigit(exp[i]))
+                    num.Append(exp[i]);
                 else
                 {
-                    //if (currentPriority == -1 || _priority[exp[i]] > currentPriority)
-                    //{
-                    //    currentPriority = _priority[exp[i]];
-                    //}
+                    postfix.Add(num.ToString());
+                    num.Clear();
+
                     if (currentPriority != -1 && _priority[exp[i]] <= currentPriority)
-                    {
                         CleanStack(ref _operandStack, ref postfix);
-                        //currentPriority = _priority[exp[i]];
-                        //currentPriority = -1;
-                    }
+
                     currentPriority = _priority[exp[i]];
-                    _operandStack.Push(exp[i]);
+                    _operandStack.Push(exp[i].ToString());
                 }
             }
-            
+
+            num.Append(exp[exp.Length - 1]);
+            postfix.Add(num.ToString());
+            CleanStack(ref _operandStack, ref postfix);
+
             //???
-           return postfix.ToString();
+            return postfix;
         }
 
-        private void CleanStack(ref Stack<char> _opStack, ref StringBuilder pstfx)
+        private void CleanStack(ref Stack<string> _opStack, ref List<string> pstfx)
         {
             while (_opStack.Count > 0)
             {
-                //pstfx.Append(_opStack.Last());
-                //_opStack.Pop();
-                //var a = _opStack.Pop();
-                pstfx.Append(_opStack.Pop());
+                pstfx.Add(_opStack.Pop());
             }
         }
     }
 
     public class Calculator
     {
-        //private string _expr = String.Empty;
-        private string _result = "0";
-
-        //public string Expression
-        //{
-        //    private get => _expr;
-        //    set => _expr = value;
-        //}
-
-        public string Result
-        {
-            get => _result;
-            set => _result = Calculate(value);
-        }
-
-        public string Calculate(string exp)
+        public string Calculate(List<string> exp)
         {
             var _stack = new Stack<double>();
             double res = 0;
 
             foreach (var s in exp)
             {
-                if (Char.IsDigit(s))
+                if (double.TryParse(s, out var number))
                     _stack.Push(Convert.ToDouble(s.ToString()));
                 else
                 {
@@ -127,16 +85,17 @@ namespace new_test_avalonia.Models
 
                     switch (s)
                     {
-                        case '+':
+                        case "+":
                             res = b + a;
                             break;
-                        case '-':
+                        case "-":
                             res = b - a;
                             break;
-                        case '*':
+                        case "*":
                             res = b * a;
                             break;
-                        case '/':
+                        case "/":
+                            if (a == 0) return "null";
                             res = b / a;
                             break;
                         default:
@@ -152,44 +111,10 @@ namespace new_test_avalonia.Models
         }
     }
 
-    //class Calculator
-    //{
-    //    private double _firstValue = 0;
-    //    private double _secondValue = 0;
-    //    private double _result = 0;
-
-    //    public double FirstValue
-    //    {
-    //        get => _firstValue;
-    //        set => _firstValue = value;
-    //    }
-
-    //    public double SecondValue
-    //    {
-    //        get => _secondValue;
-    //        set => _secondValue = value;
-    //    }
-
-    //    public double Result
-    //    {
-    //        get => _result;
-    //        set => _result = value;
-    //    }
-    //}
-
-    public enum Operation
-    {
-        Empty,
-        Add,
-        Subtract,
-        Multiply,
-        Divide,
-        Result
-    }
-
     public enum Status
     {
         Empty,
+        Zero,
         Operator,
         Number
     }
