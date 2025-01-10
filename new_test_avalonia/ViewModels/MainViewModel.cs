@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using new_test_avalonia.Models;
 using System.Text;
 using System.Linq.Expressions;
+using System.Collections.Generic;
 
 namespace new_test_avalonia.ViewModels
 {
@@ -16,14 +17,14 @@ namespace new_test_avalonia.ViewModels
         
         private string _displayText = "0";
         private Status _status = Status.Empty;
-        public ReactiveCommand<string, Unit> AddNewSymbol { get; }
+        public ReactiveCommand<char, Unit> AddNewSymbol { get; }
         public ReactiveCommand<Unit, Unit> ClearAll { get; }
         public ReactiveCommand<Unit, Unit> BackSpace { get; }
         public ReactiveCommand<Unit, Unit> Result { get; }
 
         public MainViewModel()
         {
-            AddNewSymbol = ReactiveCommand.Create<string>(AddSymbol);
+            AddNewSymbol = ReactiveCommand.Create<char>(AddSymbol);
             ClearAll = ReactiveCommand.Create(Clearing);
             BackSpace = ReactiveCommand.Create(DeletePrevious);
             Result = ReactiveCommand.Create(CalculateAll);
@@ -37,8 +38,10 @@ namespace new_test_avalonia.ViewModels
         }
 
         //добавление символа для отображения
-        private void AddSymbol(string symbol)
+        private void AddSymbol(char symbol)
         {
+            var digit = string.Empty;
+
             if (IsCombinationAllowed(symbol)) 
             { 
                 if (_status == Status.Empty) DisplayText = String.Empty;
@@ -66,14 +69,14 @@ namespace new_test_avalonia.ViewModels
         }
 
         //не оч хорошо
-        //создать изменяемые лист(стринг) для манипуляции с диплейтекстом?
+        //создать изменяемые лист(стринг) для манипуляции с дисплейтекстом?
         //да, лучше поменять
         private void DeletePrevious()
         {
             if (DisplayText.Length > 1)
             {
                 DisplayText = DisplayText.Remove(DisplayText.Length - 1);
-                ChangeStatus(DisplayText[DisplayText.Length - 1].ToString());
+                ChangeStatus(DisplayText[DisplayText.Length - 1]);
             }
             else if (DisplayText.Length == 1)
             {
@@ -92,19 +95,20 @@ namespace new_test_avalonia.ViewModels
          * к некорректному отображению
          * например, нуль после оператора в начале числа, двойные-тройные операторы и т.д.
          */
-        private bool IsCombinationAllowed(string s) => (_status == Status.Number)
-                                                        || (_status == Status.Operator && (IsZero(s) || IsDigit(s)))
-                                                        || (_status == Status.Empty && !IsZero(s) && IsDigit(s))
-                                                        || (_status == Status.Zero && !IsZero(s) && !IsDigit(s));
+        private bool IsCombinationAllowed(char s) => (_status == Status.Number)
+                                                        || (_status == Status.Operator && (IsZero(s) || Char.IsDigit(s)))
+                                                        || (_status == Status.Empty && !IsZero(s) && Char.IsDigit(s))
+                                                        || (_status == Status.Zero && !IsZero(s) && !Char.IsDigit(s));
 
         //является ли числом
-        private bool IsDigit(string s) => int.TryParse(s, out int n);
+        //private bool IsDigit(char s) => int.TryParse(s, out int n);
+
         //является ли нулем
-        private bool IsZero(string s) => s == "0";
-        private void ChangeStatus(string s) 
+        private bool IsZero(char s) => s == '0';
+        private void ChangeStatus(char s) 
         {
             if (IsZero(s) && _status != Status.Number) _status = Status.Zero;
-            else if (IsDigit(s)) _status = Status.Number;
+            else if (Char.IsDigit(s)) _status = Status.Number;
             else _status = Status.Operator;
         }
     }

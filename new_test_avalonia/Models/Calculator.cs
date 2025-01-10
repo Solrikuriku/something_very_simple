@@ -24,6 +24,7 @@ namespace new_test_avalonia.Models
             var _operandStack = new Stack<string>();
             var currentPriority = -1;
             var postfix = new List<string>();
+            var nums = new List<int>();
             var num = new StringBuilder();
 
             //нет смысла делать ловушки для дурака, так как текстбокс не пропустит ошибочные символы
@@ -34,11 +35,15 @@ namespace new_test_avalonia.Models
              * Если операнд, то определяется его приоритет.
              */
             for (int i = 0; i < exp.Length - 1; i++)
-            {
+            {                
                 if (Char.IsDigit(exp[i]))
+                { 
                     num.Append(exp[i]);
+                }
                 else
                 {
+                    //var symbol = Convert.ToChar(exp[i]);
+
                     postfix.Add(num.ToString());
                     num.Clear();
 

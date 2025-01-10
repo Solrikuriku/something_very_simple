@@ -33,61 +33,61 @@
 		<Grid RowDefinitions="auto,auto,auto,auto" ColumnDefinitions="*,*,*,*,*">
 			<Button Grid.Row="0" Grid.Column="0" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>1</s:String>
+					<s:Char>1</s:Char>
 				</Button.CommandParameter>
 				1
 			</Button>
 			<Button Grid.Row="0" Grid.Column="1" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>2</s:String>
+					<s:Char>2</s:Char>
 				</Button.CommandParameter>
 				2
 			</Button>
 			<Button Grid.Row="0" Grid.Column="2" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>3</s:String>
+					<s:Char>3</s:Char>
 				</Button.CommandParameter>
 				3
 			</Button>
 			<Button Grid.Row="1" Grid.Column="0" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>4</s:String>
+					<s:Char>4</s:Char>
 				</Button.CommandParameter>
 				4
 			</Button>
 			<Button Grid.Row="1" Grid.Column="1" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>5</s:String>
+					<s:Char>5</s:Char>
 				</Button.CommandParameter>
 				5
 			</Button>
 			<Button Grid.Row="1" Grid.Column="2" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>6</s:String>
+					<s:Char>6</s:Char>
 				</Button.CommandParameter>
 				6
 			</Button>
 			<Button Grid.Row="2" Grid.Column="0" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>7</s:String>
+					<s:Char>7</s:Char>
 				</Button.CommandParameter>
 				7
 			</Button>
 			<Button Grid.Row="2" Grid.Column="1" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>8</s:String>
+					<s:Char>8</s:Char>
 				</Button.CommandParameter>
 				8
 			</Button>
 			<Button Grid.Row="2" Grid.Column="2" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>9</s:String>
+					<s:Char>9</s:Char>
 				</Button.CommandParameter>
 				9
 			</Button>
 			<Button Grid.Row="3" Grid.Column="1" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>0</s:String>
+					<s:Char>0</s:Char>
 				</Button.CommandParameter>
 				0
 			</Button>
@@ -95,25 +95,25 @@
 			<Button Grid.Row="3" Grid.Column="2" Command="{Binding BackSpace}">←</Button>
 			<Button Grid.Row="0" Grid.Column="3" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>+</s:String>
+					<s:Char>+</s:Char>
 				</Button.CommandParameter>
 				+
 			</Button>
 			<Button Grid.Row="0" Grid.Column="4" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>-</s:String>
+					<s:Char>-</s:Char>
 				</Button.CommandParameter>
 				-
 			</Button>
 			<Button Grid.Row="1" Grid.Column="3" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>*</s:String>
+					<s:Char>*</s:Char>
 				</Button.CommandParameter>
 				*
 			</Button>
 			<Button Grid.Row="1" Grid.Column="4" Command="{Binding AddNewSymbol}">
 				<Button.CommandParameter>
-					<s:String>/</s:String>
+					<s:Char>/</s:Char>
 				</Button.CommandParameter>
 				/
 			</Button>
